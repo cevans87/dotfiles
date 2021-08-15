@@ -2,4 +2,4 @@
 
 set -e
 
-echo "haha!"
+mv -n * $HOME
