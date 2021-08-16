@@ -2,4 +2,17 @@
 
 set -e
 
-mv -n * $HOME
+_CWD=$CWD
+trap 'dirs -c && cd $_CWD' exit
+
+# Make sure dotfiles are in home directory.
+pushd "$(dirname "$0")" > /dev/null
+pushd .. > /dev/null
+if [ "$CWD" != "$HOME" ] ; then
+    cp --recursive .git $HOME/.git
+    pushd $HOME > /dev/null
+    git reset --hard
+    popd > /dev/null
+fi
+popd > /dev/null
+popd > /dev/null
