@@ -23,6 +23,7 @@ do_file_action_at_base_path () {
     if [ -d $BASE_PATH ] ; then
         pushd $BASE_PATH > /dev/null
         for RELATIVE_PATH in $(git ls-tree --name-only -r HEAD) ; do
+            mkdir -p $(dirname $HOME/$RELATIVE_PATH)
             $ACTION $PWD/$RELATIVE_PATH $HOME/$RELATIVE_PATH
         done
         popd > /dev/null
