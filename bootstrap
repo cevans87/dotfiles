@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+_CWD=$CWD
+trap 'dirs -c && cd $_CWD' exit
+
+REPO=$(dirname $(realpath $0))
+
+pushd $REPO > /dev/null
+#sudo apt-get update \
+    #&& DEBIAN_FRONTEND=noninteractive xargs sudo -E apt-get install -y --no-install-recommends \
+    #cat \
+    #    < [ -f apt_requirements.txt ] apt_requirements.txt || /dev/null \
+	#    < [ -f apt_requirements.$USER.txt ] apt_requirements.$USER.txt || /dev/null \
+    #&& sudo apt-get clean \
+    #&& sudo rm -rf /var/lib/apt/lists/*
+popd > /dev/null
+
+do_file_action_at_base_path () {
+    ACTION=$1
+    BASE_PATH=$2
+    if [ -d $BASE_PATH ] ; then
+        pushd $BASE_PATH > /dev/null
+        for RELATIVE_PATH in $(git ls-tree --name-only -r HEAD) ; do
+            $ACTION $PWD/$RELATIVE_PATH $HOME/$RELATIVE_PATH
+        done
+        popd > /dev/null
+    fi
+}
+LINK_PATHS=( $REPO/link/default $REPO/link/$USER )
+for LINK_PATH in ${LINK_PATHS[@]} ; do
+    do_file_action_at_base_path "ln -fs" $LINK_PATH
+done
+COPY_PATHS=( $REPO/copy/default $REPO/copy/$USER )
+for COPY_PATH in ${COPY_PATHS[@]} ; do
+    do_file_action_at_base_path "cp -f" $COPY_PATH
+done
