@@ -20,6 +20,13 @@ do_recursive_action_from_path_to_path () {
         popd > /dev/null
     fi
 }
+do_action_if_directory () {
+    ACTION=$1
+    IF_DIRECTORY=$2
+    if [ -f $IF_DIRECTORY ] ; then
+        $ACTION
+    fi
+}
 do_action_if_file () {
     ACTION=$1
     IF_FILE=$2
@@ -51,11 +58,11 @@ for HOME_COPY_PATH in ${COPY_HOME_PATHS[@]} ; do
 done
 APT_KEYS_PATHS=( $REPO/apt/keys/default $REPO/apt/keys/$USER )
 for APT_KEYS_PATH in ${APT_KEYS_PATHS[@]} ; do
-    do_recursive_action_from_path_to_path "sudo cp -f" $APT_KEYS_PATH /usr/share/keyrings
+    do_action_if_directory "sudo cp -f * /usr/share/keyrings" $APT_KEYS_PATH
 done
 APT_SOURCES_PATHS=( $REPO/apt/sources/default $REPO/apt/sources/$USER )
 for APT_SOURCES_PATH in ${APT_SOURCES_PATHS[@]} ; do
-    do_recursive_action_from_path_to_path "sudo cp -f" $APT_SOURCES_PATH /etc/apt/sources.list.d
+    do_action_if_directory "sudo cp -f * /etc/apt/sources.list.d" $APT_SOURCES_PATH
 done
 sudo apt-get update
 APT_PACKAGES_FILES=( $REPO/apt/packages/default $REPO/apt/packages/$USER )
