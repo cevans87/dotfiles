@@ -6,6 +6,8 @@ _CWD=$CWD
 trap 'dirs -c && cd $_CWD' exit
 
 REPO=$(dirname $(realpath $0))
+USER=$(whoami)
+HOSTNAME=$(hostname)
 
 do_recursive_action_from_path_to_path () {
     RECURSIVE_ACTION=$1
@@ -13,9 +15,9 @@ do_recursive_action_from_path_to_path () {
     TO_BASE_PATH=$3
     if [ -d $FROM_BASE_PATH ] ; then
         pushd $FROM_BASE_PATH > /dev/null
-        for RELATIVE_PATH in $(find . -type f -print) ; do
+        for RELATIVE_PATH in $(find . -type f) ; do
             mkdir -p $(dirname $TO_BASE_PATH/$RELATIVE_PATH)
-            $RECURSIVE_ACTION $RELATIVE_PATH $TO_BASE_PATH/$RELATIVE_PATH
+            $RECURSIVE_ACTION $FROM_BASE_PATH/$RELATIVE_PATH $TO_BASE_PATH/$RELATIVE_PATH
         done
         popd > /dev/null
     fi
