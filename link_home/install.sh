@@ -5,13 +5,13 @@ set -e
 BD=$(dirname $(realpath $0))
 DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 
-echo ">>> Link"
+echo ">>> Link home"
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
         for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
-            sudo mkdir -pv $(dirname $RF)
-            sudo ln -fsv $D/$RF /$RF
+            mkdir -pv $(dirname $HOME/$RF)
+            ln -fsv $D/$RF $HOME/$RF
         done
     fi
 done
-echo "<<< Link"
+echo "<<< Link home"

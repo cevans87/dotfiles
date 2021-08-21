@@ -2,18 +2,16 @@
 
 set -e
 
-_CWD=$CWD
-trap 'dirs -c && cd $_CWD' exit
-
 BD=$(dirname $(realpath $0))
+FS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 
 echo ">>> Apt packages"
-pushd $BD > /dev/null
-FS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+sudo apt-get update
 for F in ${FS[@]} ; do
     if [ -f $F ] ; then
-        xargs -a $F sudo apt-get install -y --no-install-recommends
+        sudo apt-get install -y --no-install-recommends $(eval echo $(cat $F))
     fi
 done
-popd > /dev/null
+sudo apt-get clean
+sudo rm -rf /var/lib/apt/lists/*
 echo "<<< Apt packages"

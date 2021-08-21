@@ -2,11 +2,11 @@
 
 set -e
 
-_CWD=$CWD
-trap 'dirs -c && cd $_CWD' exit
-
 BD=$(dirname $(realpath $0))
 
-for F in $(find $BD -type f | sed "s/^\.\///" | grep -P "^.*/install.sh$") ; do
-    $F
-done
+$BD/apt/install.sh
+$BD/copy/install.sh
+$BD/copy_home/install.sh
+$BD/link/install.sh
+$BD/link_home/install.sh
+$BD/snaps/install.sh

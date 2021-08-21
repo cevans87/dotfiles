@@ -2,21 +2,16 @@
 
 set -e
 
-_CWD=$CWD
-trap 'dirs -c && cd $_CWD' exit
-
 BD=$(dirname $(realpath $0))
-
-echo ">>> Copy home"
-pushd $BD > /dev/null
 DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+
+echo ">>> Copy"
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
-        for RF in $(find $D -type f | sed "s/^\.\///" | xargs realpath --relative-to=$D) ; do
-            echo $RF
-            cp -v --remove-destination $D/$RF $HOME/$RF
+        for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
+            sudo mkdir -pv $(dirname $RF)
+            sudo cp -v --remove-destination $D/$RF /$RF
         done
     fi
 done
-popd > /dev/null
-echo "<<< Copy home"
+echo "<<< Copy"

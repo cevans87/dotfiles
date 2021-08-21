@@ -2,18 +2,17 @@
 
 set -e
 
-_CWD=$CWD
-trap 'dirs -c && cd $_CWD' exit
-
 BD=$(dirname $(realpath $0))
+DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+TD=/usr/share/keyrings
 
 echo ">>> Apt keys"
-pushd $BD > /dev/null
-DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+sudo mkdir -pv /usr/share/keyrings
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
-        sudo cp -v --remove-destination $D/* /usr/share/keyrings
+        for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
+            sudo cp -v --remove-destination $D/$RF $TD/$RF
+        done
     fi
 done
-popd > /dev/null
 echo "<<< Apt keys"

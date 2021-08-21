@@ -2,18 +2,20 @@
 
 set -e
 
-_CWD=$CWD
-trap 'dirs -c && cd $_CWD' exit
-
 BD=$(dirname $(realpath $0))
+DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+TD=/etc/apt/sources.list.d
 
 echo ">>> Apt sources"
-pushd $BD > /dev/null
-DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+sudo mkdir -pv $TD
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
-        sudo cp -v --remove-destination $D/* /etc/apt/sources.list.d
+        for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
+            sudo rm -fv $TD/$RF
+            cat $D/$RF | while read -r L ; do
+                echo $(eval echo $L) | sudo tee -a $TD/$RF
+            done
+        done
     fi
 done
-popd > /dev/null
 echo "<<< Apt sources"
