@@ -12,6 +12,7 @@ for D in ${DS[@]} ; do
     if [ -d $D ] ; then
         for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
             sudo rm -fv $TD/$RF
+            # RF must end in a newline for final line to be processed
             cat $D/$RF | while read -r L ; do
                 echo $(eval echo $L) | sudo tee -a $TD/$RF
             done
