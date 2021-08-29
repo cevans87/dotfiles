@@ -1,3 +1,4 @@
 docker-ce
 linux-headers-$(uname -r)
+ssh-client
 rsync
