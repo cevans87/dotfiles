@@ -3,7 +3,7 @@
 set -e
 
 echo ">>> Dconf gnome terminal"
-# Settings generated with `dconf dump /org/gnome/terminal`
+# Settings generated with `dconf dump /org/gnome/terminal/`
 echo "$(cat <<-EOM
 [legacy]
 theme-variant='dark'
@@ -12,6 +12,7 @@ theme-variant='dark'
 audible-bell=false
 background-color='rgb(23,20,33)'
 bold-is-bright=true
+font='JetBrains Mono 11'
 foreground-color='rgb(208,207,204)'
 use-theme-colors=false
 EOM
