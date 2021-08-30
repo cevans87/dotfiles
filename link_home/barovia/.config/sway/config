@@ -38,8 +38,8 @@ output * bg /usr/share/backgrounds/*ubuntu.png fill
 # Example configuration:
 
 exec swayidle -w \
-         timeout 300 'swaylock -f -c 000000' \
-         timeout 900 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         timeout 900 'swaylock -f -c 000000' \
+         timeout 2700 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          before-sleep 'swaylock -f -c 000000'
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
@@ -228,8 +228,10 @@ default_border pixel
 # get outputs = swaymsg -t get_outputs
 # laptop = eDP-1 = "Unknown 0x058B 0x00000000"
 # home = DP-2 = "Dell Inc. DELL U3818DW 97F8P06D0R6L"
-# ? = office
-# output scale 2
+# office = DP-2 = "Dell Inc. DELL U4021QW HJ15T83"
+output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
+output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 5120x2160
+
 set $laptop eDP-1
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
