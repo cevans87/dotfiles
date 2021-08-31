@@ -1,6 +1,6 @@
-dconf-cli
+alacritty
 fonts-jetbrains-mono
-gnome-terminal
+libusb-dev
 pavucontrol
 steam-launcher
 sway

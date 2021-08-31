@@ -14,7 +14,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term gnome-terminal
+set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -229,14 +229,17 @@ default_border pixel
 # laptop = eDP-1 = "Unknown 0x058B 0x00000000"
 # home = DP-2 = "Dell Inc. DELL U3818DW 97F8P06D0R6L"
 # office = DP-2 = "Dell Inc. DELL U4021QW HJ15T83"
-output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
-output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 5120x2160
+output "Dell Inc. DELL U3818DW 97F8P06D0R6L" scale 1
+output "Dell Inc. DELL U3818DW 97F8P06D0R6L" pos 0 0 res 3840x1600
+#output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
+#output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 5120x2160
+output "Dell Inc. DELL U4021QW HJ15T83" scale 1
+output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 3840x1600
 
 set $laptop eDP-1
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 
 bindsym $mod+p exec swaylock -f -c 000000
-bindsym $mod+Ctrl+Shift+p exec swaymsg "output * dpms off"
-bindsym $mod+Shift+p exec swaymsg "output * dpms on"
+bindsym --locked $mod+Shift+p exec ~/.config/sway/pause.sh
 
