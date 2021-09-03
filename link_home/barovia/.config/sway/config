@@ -229,6 +229,7 @@ default_border pixel
 # laptop = eDP-1 = "Unknown 0x058B 0x00000000"
 # home = DP-2 = "Dell Inc. DELL U3818DW 97F8P06D0R6L"
 # office = DP-2 = "Dell Inc. DELL U4021QW HJ15T83"
+output eDP-1 scale 1.5
 output "Dell Inc. DELL U3818DW 97F8P06D0R6L" scale 1
 output "Dell Inc. DELL U3818DW 97F8P06D0R6L" pos 0 0 res 3840x1600
 #output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
@@ -241,5 +242,6 @@ bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 
 bindsym $mod+p exec swaylock -f -c 000000
-bindsym --locked $mod+Shift+p exec ~/.config/sway/pause.sh
+bindsym $mod+Alt+p exec swaylock -f -c 000000 && swaymsg "output * dpms off"
+bindsym --locked $mod+Ctrl+p exec swaymsg "output * dpms on"
 
