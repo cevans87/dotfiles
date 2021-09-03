@@ -6,3 +6,5 @@ popd > /dev/null
 if [ -f $HOME/.bash_aliases.$HOSTNAME ] ; then
     . $HOME/.bash_aliases.$HOSTNAME
 fi
+
+eval `keychain --eval 2> /dev/null`
