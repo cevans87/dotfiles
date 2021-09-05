@@ -1,1 +1,1 @@
-deb http://ppa.launchpad.net/aslatter/ppa/ubuntu/ $(cat /etc/os-release | grep -oP "(?<=VERSION_CODENAME=).+") main
+deb http://ppa.launchpad.net/aslatter/ppa/ubuntu/ $VERSION_CODENAME main

@@ -1,13 +1,11 @@
-alacritty
-fonts-jetbrains-mono
-keychain
-libusb-dev
+brightnessctl
 mako-notifier
+pamixer
 pavucontrol
-steam-launcher
 sway
 swayidle
 swaylock
 xdg-desktop-portal-wlr
+wob
 wofi
 

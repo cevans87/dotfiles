@@ -195,6 +195,20 @@ mode "resize" {
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
+
+    bindsym 1 resize set width 100 ppt
+    bindsym 2 resize set width 50 ppt
+    bindsym 3 resize set width 33 ppt
+    bindsym Shift+3 resize set width 67 ppt
+    bindsym 4 resize set width 25 ppt
+    bindsym Shift+4 resize set width 75 ppt
+
+    bindsym 6 resize set height 100 ppt
+    bindsym 7 resize set height 50 ppt
+    bindsym 8 resize set height 33 ppt
+    bindsym Shift+8 resize set height 67 ppt
+    bindsym 9 resize set height 25 ppt
+    bindsym Shift+9 resize set height 75 ppt
 }
 bindsym $mod+r mode "resize"
 
@@ -232,16 +246,26 @@ default_border pixel
 output eDP-1 scale 1.5
 output "Dell Inc. DELL U3818DW 97F8P06D0R6L" scale 1
 output "Dell Inc. DELL U3818DW 97F8P06D0R6L" pos 0 0 res 3840x1600
-#output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
-#output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 5120x2160
-output "Dell Inc. DELL U4021QW HJ15T83" scale 1
-output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 3840x1600
+output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
+output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 5120x2160
+#output "Dell Inc. DELL U4021QW HJ15T83" scale 1
+#output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 3840x1600
 
 set $laptop eDP-1
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 
 bindsym $mod+p exec swaylock -f -c 000000
-bindsym $mod+Alt+p exec swaylock -f -c 000000 && swaymsg "output * dpms off"
+bindsym --locked $mod+Alt+p swaymsg "output * dpms off"
 bindsym --locked $mod+Ctrl+p exec swaymsg "output * dpms on"
+bindsym --locked $mod+Ctrl+Alt+p exec systemctl suspend
 
+set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
+exec mkfifo $WOBSOCK && tail -f $WOBSOCK | wob
+
+bindsym XF86AudioRaiseVolume exec pamixer -ui 2 && pamixer --get-volume > $WOBSOCK
+bindsym XF86AudioLowerVolume exec pamixer -ud 2 && pamixer --get-volume > $WOBSOCK
+bindsym XF86AudioMute exec pamixer --toggle-mute && ( pamixer --get-mute && echo 0 > $WOBSOCK ) || pamixer --get-volume > $WOBSOCK
+
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%- | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $WOBSOCK
+bindsym XF86MonBrightnessUp exec brightnessctl set +5% | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $WOBSOCK

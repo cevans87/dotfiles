@@ -2,6 +2,9 @@
 
 set -e
 
+export VERSION_CODENAME=$(cat /etc/os-release | grep -oP "(?<=VERSION_CODENAME=).+")
+export ARCH=$(dpkg --print-architecture)
+
 BD=$(dirname $(realpath $0))
 DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 TD=/etc/apt/sources.list.d
@@ -19,4 +22,3 @@ for D in ${DS[@]} ; do
         done
     fi
 done
-echo "<<< Apt sources"
