@@ -3,4 +3,5 @@ if [ "$XDG_SESSION_DESKTOP" = "sway" ] ; then
     export _JAVA_AWT_WM_NONREPARENTING=1
     export MOZ_ENABLE_WAYLAND=1
 fi
-eval $(ssh-agent) > /dev/null
+
+eval $(keychain --eval --dir $HOME/.config/keychain --quiet --agents gpg,ssh id_ed25519)

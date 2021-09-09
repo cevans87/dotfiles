@@ -246,7 +246,7 @@ default_border pixel
 output eDP-1 scale 1.5
 output "Dell Inc. DELL U3818DW 97F8P06D0R6L" scale 1
 output "Dell Inc. DELL U3818DW 97F8P06D0R6L" pos 0 0 res 3840x1600
-output "Dell Inc. DELL U4021QW HJ15T83" scale 1.5
+output "Dell Inc. DELL U4021QW HJ15T83" scale 1.25
 output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 5120x2160
 #output "Dell Inc. DELL U4021QW HJ15T83" scale 1
 #output "Dell Inc. DELL U4021QW HJ15T83" pos 0 0 res 3840x1600
@@ -256,7 +256,7 @@ bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 
 bindsym $mod+p exec swaylock -f -c 000000
-bindsym --locked $mod+Alt+p swaymsg "output * dpms off"
+bindsym --locked $mod+Alt+p exec swaymsg "output * dpms off"
 bindsym --locked $mod+Ctrl+p exec swaymsg "output * dpms on"
 bindsym --locked $mod+Ctrl+Alt+p exec systemctl suspend
 
