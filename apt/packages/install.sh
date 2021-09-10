@@ -9,7 +9,7 @@ echo ">>> Apt packages"
 sudo apt-get update
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
-        echo sudo apt-get install -y --no-install-recommends $(eval echo $(cat $D/*))
+        sudo apt-get install -y --no-install-recommends $(eval echo $(cat $D/*))
     fi
 done
 sudo apt-get clean
