@@ -1,6 +1,6 @@
-if [ -f $HOME/.bash_aliases.$HOSTNAME ] ; then
-    . $HOME/.bash_aliases.$HOSTNAME
+if [ -f ~/.bash_aliases.$(hostname) ] ; then
+    . ~/.bash_aliases.$(hostname)
 fi
-if [ -f $HOME/.bash_aliases.$USER ] ; then
-    . $HOME/.bash_aliases.$USER
+if [ -f ~/.bash_aliases.$(whoami) ] ; then
+    . ~/.bash_aliases.$(whoami)
 fi
