@@ -1,5 +1,9 @@
-alacritty
 fonts-jetbrains-mono
+gnome-tweaks
 keychain
+liburing-dev
 libusb-dev
-steam-launcher
+linux-doc
+manpages-dev
+manpages-posix-dev
+steam

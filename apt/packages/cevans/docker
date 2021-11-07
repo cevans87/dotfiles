@@ -1,0 +1,6 @@
+apt-transport-https
+ca-certificates
+curl
+docker-ce
+gnupg
+lsb-release

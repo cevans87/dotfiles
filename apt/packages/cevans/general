@@ -1,5 +1,5 @@
-docker-ce
+git
 htop
 linux-headers-$(uname -r)
-opessh-client
+openssh-client
 rsync

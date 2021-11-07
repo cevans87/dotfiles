@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  hemlock:
+    extends:
+      file: ./Hemlock/.docker-compose.yml
+      service: dev
+    volumes:
+      - ./experiments:/home/hemlock/experiments
+      - ./branchtaken.github.io:/home/hemlock/branchtaken.github.io
+      - ./Hemlock.doc/doc:/home/hemlock/Hemlock/doc
