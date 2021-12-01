@@ -1,0 +1,4 @@
+.devcontainer.json
+.vscode/
+_build
+.*.swp
