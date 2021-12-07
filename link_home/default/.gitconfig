@@ -1,8 +1,8 @@
 [core]
 	editor = vim
-	excludesfile = /home/cevans/.gitignore
+	excludesfile = ~/.gitignore
 [include]
-    path = /home/cevans/.gitconfig.private
+    path = ~/.gitconfig.private
 [user]
 	email = c.d.evans87@gmail.com
 	name = Cameron Evans
