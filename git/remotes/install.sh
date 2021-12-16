@@ -6,12 +6,12 @@ IFS=$'\n'
 BD=$(dirname $(realpath $0))
 DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 
-echo ">>> Snaps"
+echo ">>> Git remotes"
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
         for L in $(cat $D/*) ; do
-            sudo snap install --classic $(eval echo $L)
+            echo $(eval echo $L) | xargs git clone
         done
     fi
 done
-echo "<<< Snaps"
+echo "<<< Git remotes"

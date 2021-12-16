@@ -6,6 +6,7 @@ BD=$(dirname $(realpath $0))
 
 $BD/pre_install/install.sh
 $BD/apt/install.sh
+$BD/git/install.sh
 $BD/cargo/install.sh
 $BD/copy/install.sh
 $BD/copy_home/install.sh

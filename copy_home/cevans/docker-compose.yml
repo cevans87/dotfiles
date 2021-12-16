@@ -1,6 +1,16 @@
 version: "3.9"
 services:
+  aoc21:
+    build:
+      context: .
+      target: aoc21
+    container_name: cevans87__aoc21
+    extends:
+      file: ./aoc21/docker-compose.yml
+      service: user
+    image: cevans87/aoc21
   hemlock:
+    container_name: cevans87__hemlock__dev
     extends:
       file: ./Hemlock/.docker-compose.yml
       service: dev
