@@ -6,6 +6,23 @@ set shiftwidth=4
 set tabstop=4
 set textwidth=100
 
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
+
+let g:lsp_document_highlight_enabled = 0
+
+if executable('clangd')
+    augroup lsp_clangd
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+			\ 'name': 'clangd',
+			\ 'cmd': {server_info->['clangd']},
+			\ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+			\ })
+    augroup end
+endif
+
 if executable('ocamllsp')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'ocamllps',

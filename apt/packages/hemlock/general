@@ -1,2 +1,5 @@
+clangd
 gdb
 less
+man
+openssh-client

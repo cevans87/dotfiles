@@ -6,6 +6,12 @@ set shiftwidth=4
 set tabstop=4
 set textwidth=100
 
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
+
+let g:lsp_document_highlight_enabled = 0
+
 if executable('ocamllsp')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'ocamllps',
