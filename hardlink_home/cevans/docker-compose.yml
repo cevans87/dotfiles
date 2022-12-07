@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  modulo:
+    container_name: cevans87__modulo
+    build:
+      context: .
+      target: cevans
+    image: cevans87/modulo
+  hemlock:
+    build:
+      context: .
+      target: hemlock
+    cap_add:
+      - SYS_PTRACE
+    environment:
+      - SSY_AUTH_SOCK
+    container_name: cevans87__hemlock
+    extends:
+      file: ./Hemlock/docker-compose.yml
+      service: base
+    image: cevans87/hemlock
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./Hemlock:/home/hemlock/Hemlock
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
