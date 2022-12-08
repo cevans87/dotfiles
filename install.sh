@@ -4,14 +4,8 @@ set -e
 
 BD=$(dirname $(realpath $0))
 
-$BD/pre_install/install.sh
-$BD/apt/install.sh
-$BD/git/install.sh
-$BD/cargo/install.sh
-$BD/opam/install.sh
-$BD/copy/install.sh
-$BD/hardlink_home/install.sh
-$BD/symlink/install.sh
-$BD/symlink_home/install.sh
-$BD/snaps/install.sh
-$BD/post_install/install.sh
+for RF in $( find -type f -name install.sh | xargs realpath --relative-to=$BD | sort -n) ; do
+    if [ $RF != "install.sh" ] ; then
+        $RF
+    fi
+done

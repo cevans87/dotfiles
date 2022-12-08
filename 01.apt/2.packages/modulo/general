@@ -1,0 +1,7 @@
+git
+htop
+linux-headers-$(uname -r)
+openssh-client
+python-is-python3
+python3-pip
+rsync

@@ -22,3 +22,5 @@ for D in ${DS[@]} ; do
         done
     fi
 done
+echo "<<< Apt sources"
+
