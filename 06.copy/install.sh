@@ -9,7 +9,7 @@ echo ">>> Copy"
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
         for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
-            sudo mkdir -pv $(dirname $RF)
+            sudo mkdir -pv $(dirname /$RF)
             sudo cp -v --remove-destination $D/$RF /$RF
         done
     fi

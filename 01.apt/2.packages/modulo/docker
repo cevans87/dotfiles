@@ -1,6 +1,7 @@
 apt-transport-https
 ca-certificates
 curl
+docker-compose-plugin
 docker-ce
 gnupg
 lsb-release

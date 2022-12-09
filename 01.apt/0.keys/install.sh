@@ -7,7 +7,7 @@ DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 TD=/usr/share/keyrings
 
 echo ">>> Apt keys"
-sudo mkdir -pv /usr/share/keyrings
+sudo mkdir -pv ${TD}
 for D in ${DS[@]} ; do
     if [ -d $D ] ; then
         for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
