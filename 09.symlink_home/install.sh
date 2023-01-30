@@ -10,7 +10,7 @@ for D in ${DS[@]} ; do
     if [ -d $D ] ; then
         for RF in $(find $D -type l,f | xargs realpath --no-symlinks --relative-to=$D) ; do
             mkdir -pv $(dirname $HOME/$RF)
-            ln -fsv $D/$RF $HOME/$RF
+            ln -frsv $D/$RF $HOME/$RF
         done
     fi
 done

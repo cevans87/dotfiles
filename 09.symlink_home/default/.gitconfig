@@ -8,3 +8,5 @@
 	name = Cameron Evans
 [pull]
 	rebase = true
+[credential]
+	helper = "!f() { /home/hemlock/.vscode-server/bin/e8a3071ea4344d9d48ef8a4df2c097372b0c5161/node /tmp/vscode-remote-containers-9fd0b26fa866b43b51d568440a1a95745248d2f2.js $*; }; f"

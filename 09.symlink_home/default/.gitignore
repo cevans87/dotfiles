@@ -1,4 +1,5 @@
-.devcontainer.json
+.devcontainer/
+devcontainer.json
 .vscode/
 _build
 .*.swp
