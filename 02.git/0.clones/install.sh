@@ -6,9 +6,8 @@ IFS=$'\n'
 BD=$(dirname $(realpath $0))
 DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 
-echo ">>> Git clones"
 for D in ${DS[@]} ; do
-    if [ -d $D ] ; then
+    if [ -d $D ] && [ ! -z "$(ls -A $D)" ] ; then
         for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
             if [ ! -d $HOME/$RF ] ; then
                 mkdir -pv $HOME/$RF
@@ -19,4 +18,3 @@ for D in ${DS[@]} ; do
         done
     fi
 done
-echo "<<< Git clones"

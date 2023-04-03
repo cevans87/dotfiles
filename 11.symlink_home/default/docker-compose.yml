@@ -6,7 +6,7 @@ services:
         - LATEST=branchtaken/hemlock:base
         - USER=hemlock
       context: /home/cevans
-      dockerfile: .dotfiles/09.symlink_home/Dockerfile
+      dockerfile: .dotfiles/11.symlink_home/default/Dockerfile
       target: latest
     cap_add:
       - ALL
@@ -33,7 +33,7 @@ services:
       args:
         - USER=modulo
       context: /home/cevans
-      dockerfile: .dotfiles/09.symlink_home/Dockerfile
+      dockerfile: .dotfiles/11.symlink_home/default/Dockerfile
       target: latest
     cap_add:
       - ALL
