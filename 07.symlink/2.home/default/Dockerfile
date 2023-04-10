@@ -71,37 +71,25 @@ COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
 COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
 RUN ${BD}/install.sh
 
-ENV BD=.dotfiles/06.copy
+ENV BD=.dotfiles/06.snaps
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
 COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
 COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
 RUN ${BD}/install.sh
 
-ENV BD=.dotfiles/07.hardlink_home
+ENV BD=.dotfiles/07.symlink/1.root
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
 COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
 COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
 RUN ${BD}/install.sh
 
-ENV BD=.dotfiles/08.snaps
+ENV BD=.dotfiles/07.symlink/2.home
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
 COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
 COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
 RUN ${BD}/install.sh
 
-ENV BD=.dotfiles/09.post_install
-COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
-COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
-COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
-RUN ${BD}/install.sh
-
-ENV BD=.dotfiles/10.symlink
-COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
-COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
-COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
-RUN ${BD}/install.sh
-
-ENV BD=.dotfiles/11.symlink_home
+ENV BD=.dotfiles/08.post_install
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
 COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
 COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
