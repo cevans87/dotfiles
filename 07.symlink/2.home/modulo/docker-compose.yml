@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  hemlock:
+    build:
+      args:
+        - LATEST=branchtaken/hemlock:base
+        - USER=hemlock
+      context: /home/modulo
+      dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
+      target: latest
+    cap_add:
+      - ALL
+    command: /usr/bin/tmux
+    environment:
+      - SSH_AUTH_SOCK
+    container_name: cevans87__hemlock
+    extends:
+      file: ./Hemlock/docker-compose.yml
+      service: base
+    image: cevans87/hemlock
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /home/modulo:/home/modulo
+      - /home/modulo/.bash_history:/home/hemlock/.bash_history
+      - /home/modulo/.dotfiles:/home/hemlock/.dotfiles
+      - /home/modulo/.ssh:/home/hemlock/.ssh
+      - /home/modulo/Hemlock:/home/hemlock/Hemlock
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+  modulo:
+    build:
+      args:
+        - USER=modulo
+      context: /home/modulo
+      dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
+      target: latest
+    cap_add:
+      - ALL
+    command: /usr/bin/tmux
+    container_name: cevans87__modulo
+    environment:
+      - SSH_AUTH_SOCK
+    image: cevans87/modulo
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /home/modulo:/home/modulo
+      - /home/modulo/.bash_history:/home/modulo/.bash_history
+      - /home/modulo/.dotfiles:/home/modulo/.dotfiles
+      - /home/modulo/.ssh:/home/modulo/.ssh
+      - /home/modulo/Hemlock:/home/modulo/Hemlock
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK

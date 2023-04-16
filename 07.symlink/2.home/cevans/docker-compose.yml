@@ -28,10 +28,10 @@ services:
       - /home/cevans/.ssh:/home/hemlock/.ssh
       - /home/cevans/Hemlock:/home/hemlock/Hemlock
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-  modulo:
+  mod:
     build:
       args:
-        - USER=modulo
+        - USER=mod
       context: /home/cevans
       dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
       target: latest
