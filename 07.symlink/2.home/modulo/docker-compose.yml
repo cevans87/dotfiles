@@ -6,7 +6,7 @@ services:
         - LATEST=branchtaken/hemlock:base
         - USER=hemlock
       context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
       target: latest
     cap_add:
       - ALL
@@ -33,8 +33,10 @@ services:
       args:
         - USER=modulo
       context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
       target: latest
+      ssh:
+        - default
     cap_add:
       - ALL
     command: /usr/bin/tmux

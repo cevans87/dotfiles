@@ -45,7 +45,7 @@ ENV BD=.dotfiles/02.git/0.clones
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
 COPY --chown=${USER}:${USER} ${BD}/default ${BD}/default
 COPY --chown=${USER}:${USER} ${BD}/${USER} ${BD}/${USER}
-RUN ${BD}/install.sh
+RUN --mount=type=ssh ${BD}/install.sh
 
 ENV BD=.dotfiles/02.git/1.remotes
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/

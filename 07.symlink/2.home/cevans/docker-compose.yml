@@ -6,7 +6,7 @@ services:
         - LATEST=branchtaken/hemlock:base
         - USER=hemlock
       context: /home/cevans
-      dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
+      dockerfile: .dotfiles/07.symlink/2.home/cevans/Dockerfile
       target: latest
     cap_add:
       - ALL
@@ -28,12 +28,14 @@ services:
       - /home/cevans/.ssh:/home/hemlock/.ssh
       - /home/cevans/Hemlock:/home/hemlock/Hemlock
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-  mod:
+  modulo:
     build:
       args:
-        - USER=mod
+        - USER=modulo
       context: /home/cevans
-      dockerfile: .dotfiles/07.symlink/2.home/default/Dockerfile
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      ssh:
+        - default
       target: latest
     cap_add:
       - ALL
