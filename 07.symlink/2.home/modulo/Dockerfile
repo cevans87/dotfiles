@@ -8,7 +8,8 @@ RUN apt-get update \
         ca-certificates \
         sudo \
     && rm -rf /var/lib/apt/lists/ \
-    && useradd -l -m -U -G sudo -s /bin/bash ${USER} \
+    && groupmod -n ${USER} ubuntu \
+    && usermod -d /home/${USER} -c "" -l ${USER} ubuntu \
     && echo "${USER} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 FROM ${LATEST} AS latest

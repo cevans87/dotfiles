@@ -22,9 +22,7 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - /home/modulo:/home/modulo
       - /home/modulo/.bash_history:/home/hemlock/.bash_history
-      - /home/modulo/.dotfiles:/home/hemlock/.dotfiles
       - /home/modulo/.ssh:/home/hemlock/.ssh
       - /home/modulo/Hemlock:/home/hemlock/Hemlock
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
@@ -48,9 +46,7 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - /home/modulo:/home/modulo
       - /home/modulo/.bash_history:/home/modulo/.bash_history
-      - /home/modulo/.dotfiles:/home/modulo/.dotfiles
       - /home/modulo/.ssh:/home/modulo/.ssh
       - /home/modulo/Hemlock:/home/modulo/Hemlock
       - /var/run/docker.sock:/var/run/docker.sock

@@ -7,6 +7,6 @@ DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
 
 for D in ${DS[@]} ; do
     if [ -d $D ] && [ ! -z "$(ls -A $D)" ] ; then
-        python3 -m pip install --user $(eval echo $(cat $D/*))
+        python3 -m pip install --break-system-packages --user $(eval echo $(cat $D/*))
     fi
 done

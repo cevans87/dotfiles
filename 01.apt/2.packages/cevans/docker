@@ -1,7 +1,0 @@
-apt-transport-https
-ca-certificates
-curl
-docker-ce
-docker-compose-plugin
-gnupg
-lsb-release
