@@ -1,0 +1,9 @@
+{
+    "image": "cevans87/hemlock",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+				"ocamllabs.ocaml-platform"
+			]
+        }
+}
