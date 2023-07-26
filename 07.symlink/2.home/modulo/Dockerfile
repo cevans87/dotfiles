@@ -6,17 +6,22 @@ ARG USER
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         ca-certificates \
+        locales \
         sudo \
     && rm -rf /var/lib/apt/lists/ \
     && groupmod -n ${USER} ubuntu \
     && usermod -d /home/${USER} -c "" -l ${USER} ubuntu \
-    && echo "${USER} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+    && echo "${USER} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+    && locale-gen
 
 FROM ${LATEST} AS latest
 ARG USER
 USER ${USER}
 WORKDIR /home/${USER}
 RUN yes | sudo unminimize
+
+ENV LC_ALL=
 
 ENV BD=.dotfiles/00.pre_install
 COPY --chown=${USER}:${USER} ${BD}/install.sh ${BD}/
