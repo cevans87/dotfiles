@@ -1,7 +1,9 @@
+atop
 ca-certificates
 git
 htop
 linux-headers-$(uname -r)
+lsb-release
 openssh-client
 python-is-python3
 python3-pip

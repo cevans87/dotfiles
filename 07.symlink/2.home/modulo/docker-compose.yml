@@ -1,5 +1,31 @@
 version: "3.9"
 services:
+  fuel-core:
+    build:
+      args:
+        - LATEST=FuelLabs/fuel-core
+        - USER=fuel-core
+      context: /home/modulo
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      target: latest
+    cap_add:
+      - ALL
+    command: /usr/bin/tmux
+    environment:
+      - SSH_AUTH_SOCK
+    container_name: modulo__fuel_core
+    extends:
+      file: ./Hemlock/docker-compose.yml
+      service: base
+    image: modulo/hemlock
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /home/modulo/.bash_history:/home/hemlock/.bash_history
+      - /home/modulo/.ssh:/home/hemlock/.ssh
+      - /home/modulo/Hemlock:/home/hemlock/Hemlock
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
   hemlock:
     build:
       args:
@@ -13,11 +39,11 @@ services:
     command: /usr/bin/tmux
     environment:
       - SSH_AUTH_SOCK
-    container_name: cevans87__hemlock
+    container_name: modulo__hemlock
     extends:
       file: ./Hemlock/docker-compose.yml
       service: base
-    image: cevans87/hemlock
+    image: modulo/hemlock
     privileged: true
     security_opt:
       - seccomp:unconfined
@@ -38,10 +64,10 @@ services:
     cap_add:
       - ALL
     command: /usr/bin/tmux
-    container_name: cevans87__modulo
+    container_name: modulo__modulo
     environment:
       - SSH_AUTH_SOCK
-    image: cevans87/modulo
+    image: modulo/modulo
     privileged: true
     security_opt:
       - seccomp:unconfined

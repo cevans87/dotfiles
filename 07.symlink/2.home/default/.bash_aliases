@@ -4,3 +4,5 @@ fi
 if [ -f ~/.bash_aliases.$(whoami) ] ; then
     . ~/.bash_aliases.$(whoami)
 fi
+
+export PATH="$HOME"/.local/bin:"$PATH"

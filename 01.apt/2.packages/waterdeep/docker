@@ -1,7 +1,11 @@
 apt-transport-https
 ca-certificates
+containerd.io
 curl
+dbus-user-session
 docker-buildx-plugin
+docker-ce
 docker-ce-cli
+docker-ce-rootless-extras
 docker-compose-plugin
 gnupg

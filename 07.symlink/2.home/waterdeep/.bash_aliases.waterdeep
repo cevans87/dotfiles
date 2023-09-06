@@ -1,0 +1,5 @@
+eval $(keychain --eval --dir $HOME/.config/keychain --quiet --agents gpg,ssh id_ed25519)
+
+# Firefox usually shows black screen on first startup.
+export MOZ_ENABLE_WAYLAND=1
+
