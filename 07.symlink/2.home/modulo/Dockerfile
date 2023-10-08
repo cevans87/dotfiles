@@ -1,7 +1,8 @@
 ARG BASE=ubuntu:rolling
+ARG PLATFORM=${BUILDPLATFORM}
 ARG LATEST=base
 
-FROM ${BASE} AS base
+FROM --platform=${PLATFORM} ${BASE} AS base
 ARG USER
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
@@ -15,7 +16,7 @@ RUN apt-get update \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen
 
-FROM ${LATEST} AS latest
+FROM --platform=${PLATFORM} ${LATEST} AS latest
 ARG USER
 USER ${USER}
 WORKDIR /home/${USER}

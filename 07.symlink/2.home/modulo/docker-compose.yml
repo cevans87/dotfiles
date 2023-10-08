@@ -1,8 +1,35 @@
 version: "3.9"
 services:
+  cse507:
+    build:
+      args:
+        - LATEST=cevans87/cse507:base
+        - PLATFORM=linux/amd64
+        - USER=cse507
+      context: /home/modulo
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      target: latest
+    command: /usr/bin/tmux
+    environment:
+      - SSH_AUTH_SOCK
+    container_name: modulo__cse507
+    extends:
+      file: ./cse507/docker-compose.yml
+      service: base
+    image: modulo/cse507
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /home/modulo/.bash_history:/home/cse507/.bash_history
+      - /home/modulo/.ssh:/home/cse507/.ssh
+      - /home/modulo/cse507:/home/cse507
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+
   fuel-core:
     build:
       args:
+        - PLATFORM
         - LATEST=FuelLabs/fuel-core
         - USER=fuel-core
       context: /home/modulo
@@ -17,7 +44,7 @@ services:
     extends:
       file: ./Hemlock/docker-compose.yml
       service: base
-    image: modulo/hemlock
+    image: modulo/fuel-core
     privileged: true
     security_opt:
       - seccomp:unconfined
@@ -29,6 +56,7 @@ services:
   hemlock:
     build:
       args:
+        - PLATFORM
         - LATEST=branchtaken/hemlock:base
         - USER=hemlock
       context: /home/modulo
@@ -55,6 +83,7 @@ services:
   modulo:
     build:
       args:
+        - PLATFORM
         - USER=modulo
       context: /home/modulo
       dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
