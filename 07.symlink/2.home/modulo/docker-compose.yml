@@ -23,7 +23,7 @@ services:
     volumes:
       - /home/modulo/.bash_history:/home/cse507/.bash_history
       - /home/modulo/.ssh:/home/cse507/.ssh
-      - /home/modulo/cse507:/home/cse507
+      - /home/modulo/cse507:/home/cse507/cse507
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
 
   fuel-core:
