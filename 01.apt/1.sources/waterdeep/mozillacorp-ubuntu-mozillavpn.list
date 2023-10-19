@@ -1,2 +1,0 @@
-deb https://ppa.launchpadcontent.net/mozillacorp/mozillavpn/ubuntu/ $VERSION_CODENAME main
-# deb-src https://ppa.launchpadcontent.net/mozillacorp/mozillavpn/ubuntu/ $VERSION_CODENAME main
