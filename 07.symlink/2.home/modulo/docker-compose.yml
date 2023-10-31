@@ -1,5 +1,30 @@
 version: "3.9"
 services:
+  cse503:
+    build:
+      args:
+        - PLATFORM=linux/amd64
+        - USER=cse503
+      context: /home/modulo
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      target: latest
+    command: /usr/bin/tmux
+    environment:
+      - SSH_AUTH_SOCK
+    container_name: modulo__cse503
+    extends:
+      file: ./cse507/docker-compose.yml
+      service: base
+    image: modulo/cse503
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /home/modulo/.bash_history:/home/cse503/.bash_history
+      - /home/modulo/.ssh:/home/cse507/.ssh
+      - /home/modulo/IdeaProjects/AgileBoot-Back-End:/home/cse503/AgileBoot-Back-End
+      - /home/modulo/IdeaProjects/avaje-inject:/home/cse503/avaje-inject
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
   cse507:
     build:
       args:
@@ -25,7 +50,6 @@ services:
       - /home/modulo/.ssh:/home/cse507/.ssh
       - /home/modulo/cse507:/home/cse507/cse507
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-
   fuel-core:
     build:
       args:
