@@ -1,30 +1,5 @@
 version: "3.9"
 services:
-  cse503:
-    build:
-      args:
-        - PLATFORM=linux/amd64
-        - USER=cse503
-      context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
-      target: latest
-    command: /usr/bin/tmux
-    environment:
-      - SSH_AUTH_SOCK
-    container_name: modulo__cse503
-    extends:
-      file: ./cse507/docker-compose.yml
-      service: base
-    image: modulo/cse503
-    privileged: true
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      - /home/modulo/.bash_history:/home/cse503/.bash_history
-      - /home/modulo/.ssh:/home/cse507/.ssh
-      - /home/modulo/IdeaProjects/AgileBoot-Back-End:/home/cse503/AgileBoot-Back-End
-      - /home/modulo/IdeaProjects/avaje-inject:/home/cse503/avaje-inject
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
   cse507:
     build:
       args:
@@ -103,6 +78,31 @@ services:
       - /home/modulo/.bash_history:/home/hemlock/.bash_history
       - /home/modulo/.ssh:/home/hemlock/.ssh
       - /home/modulo/Hemlock:/home/hemlock/Hemlock
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+  optional-checker-paper:
+    build:
+      args:
+        - PLATFORM
+        - LATEST=optional-checker-paper/optional-checker-paper:base
+        - USER=Optional-Checker-Paper
+      context: /home/modulo
+      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      target: latest
+    command: /usr/bin/tmux
+    environment:
+      - SSH_AUTH_SOCK
+    container_name: modulo__optional_checker_paper
+    extends:
+      file: ./Optional-Checker-Paper/docker-compose.yml
+      service: base
+    image: modulo/optional-checker-paper
+    privileged: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /home/modulo/.bash_history:/home/Optional-Checker-Paper/.bash_history
+      - /home/modulo/.ssh:/home/Optional-Checker-Paper/.ssh
+      - /home/modulo/Optional-Checker-Paper:/home/Optional-Checker-Paper/Optional-Checker-Paper
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
   modulo:
     build:
