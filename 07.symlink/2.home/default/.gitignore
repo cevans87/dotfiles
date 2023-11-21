@@ -3,3 +3,5 @@ devcontainer.json
 .vscode/
 _build
 .*.swp
+__pycache__/
+*.egg-info/
