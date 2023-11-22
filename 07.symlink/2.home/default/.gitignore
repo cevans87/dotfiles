@@ -1,7 +1,10 @@
+build/
 .devcontainer/
 devcontainer.json
+dist/
 .vscode/
 _build
-.*.swp
 __pycache__/
+venv/
+.*.swp
 *.egg-info/
