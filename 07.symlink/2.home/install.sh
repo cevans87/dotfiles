@@ -2,14 +2,15 @@
 
 set -e
 
-BD=$(dirname $(realpath $0))
-DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+BD="$(dirname "$(realpath "$0")")"
+mapfile -t DS < <("$BD"/../../ds.sh "$BD")
 
-for D in ${DS[@]} ; do
-    if [ -d $D ] && [ ! -z "$(ls -A $D)" ] ; then
-        for RF in $(find $D -type l,f | xargs realpath --no-symlinks --relative-to=$D) ; do
-            mkdir -pv $(dirname $HOME/$RF)
-            ln -frsv $D/$RF $HOME/$RF
-        done
-    fi
+for D in "${DS[@]}" ; do
+    # shellcheck disable=SC2174
+    mapfile -t FS < <(find "$D" -type f)
+    for F in "${FS[@]}" ; do
+        TF="$HOME/$(realpath --relative-to "$D" "$F")"
+        mkdir -pv "$(dirname "$TF")"
+        ln -fsv "$F" "$TF"
+    done
 done

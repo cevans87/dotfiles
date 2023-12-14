@@ -119,7 +119,7 @@ services:
       - SSH_AUTH_SOCK
     container_name: modulo__optional_checker_paper
     extends:
-      file: ./Optional-Checker-Paper/docker-compose.yml
+      file: ./cse503/Optional-Checker-Paper/docker-compose.yml
       service: base
     image: modulo/optional-checker-paper
     privileged: true

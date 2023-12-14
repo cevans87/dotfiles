@@ -2,16 +2,15 @@
 
 set -e
 
-BD=$(dirname $(realpath $0))
-DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+BD="$(dirname "$(realpath "$0")")"
+mapfile -t DS < <("$BD"/../../ds.sh "$BD")
 
-echo ">>> Symlink"
-for D in ${DS[@]} ; do
-    if [ -d $D ] && [ ! -z "$(ls -A $D)" ] ; then
-        for RF in $(find $D -type l,f | xargs realpath --no-symlinks --relative-to=$D) ; do
-            sudo mkdir -pv $(dirname /$RF)
-            sudo ln -fsv $D/$RF /$RF
-        done
-    fi
+for D in "${DS[@]}" ; do
+    # shellcheck disable=SC2174
+    mapfile -t FS < <(find "$D" -type f)
+    for F in "${FS[@]}" ; do
+        TF="/$(realpath --relative-to "$D" "$F")"
+        sudo mkdir -pv "$(dirname "$TF")"
+        sudo ln -fsv "$F" "$TF"
+    done
 done
-echo "<<< Symlink"

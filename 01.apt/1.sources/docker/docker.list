@@ -1,0 +1,1 @@
+deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(cat /etc/os-release | grep -oP "(?<=VERSION_CODENAME=).+") stable

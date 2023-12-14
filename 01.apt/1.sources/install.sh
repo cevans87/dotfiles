@@ -2,22 +2,16 @@
 
 set -e
 
-export VERSION_CODENAME=$(cat /etc/os-release | grep -oP "(?<=VERSION_CODENAME=).+")
-export ARCH=$(dpkg --print-architecture)
+BD="$(dirname "$(realpath "$0")")"
+mapfile -t DS  < <("$BD"/../../ds.sh "$BD")
 
-BD=$(dirname $(realpath $0))
-DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
-TD=/etc/apt/sources.list.d
-
-sudo mkdir -pv $TD
-for D in ${DS[@]} ; do
-    if [ -d $D ] && [ ! -z "$(ls -A $D)" ] ; then
-        for RF in $(find $D -type f | xargs realpath --relative-to=$D) ; do
-            sudo rm -fv $TD/$RF
-            # RF must end in a newline for final line to be processed
-            cat $D/$RF | while read -r L ; do
-                echo $(eval echo $L) | sudo tee -a $TD/$RF
-            done
-        done
-    fi
+for D in "${DS[@]}" ; do
+    mapfile -t FS < <(find "$D" -type f)
+    for F in "${FS[@]}" ; do
+        TF="/etc/apt/sources.list.d/$(realpath --relative-to "$D" "$F")"
+        sudo rm -fv "$TF"
+        while read -r L ; do
+            eval echo "$L" | sudo tee -a "$TF"
+        done < "$F"
+    done
 done

@@ -2,13 +2,6 @@
 
 set -e
 
-BD=$(dirname $(realpath $0))
-DS=( $BD/default $BD/$(whoami) $BD/$(hostname) )
+BD="$(dirname "$(realpath "$0")")"
 
-for D in ${DS[@]} ; do
-    if [ -d $D ] && [ ! -z "$(ls -A $D)" ] ; then
-        for S in $(eval echo $(cat $D/*)) ; do
-            cargo install $S
-        done
-    fi
-done
+"$BD"/../vs.sh "$BD" | "$BD"/../reduce.sh "cargo install"
