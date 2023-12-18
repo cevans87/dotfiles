@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+RR="$(dirname "$(realpath "$0")")"
+mapfile -t RFS < <(find "$RR" -mindepth 2 -type f -name install.sh -exec realpath --relative-to="$RR" {} + | sort -n)
+
+for RF in "${RFS[@]}" ; do
+    echo ">>> $RR/$RF"
+    "$BD/$RF"
+    echo "<<< RR$/$RF"
+done

@@ -1,0 +1,46 @@
+# syntax=docker/dockerfile-upstream:master-labs
+ARG BASE=ubuntu:rolling
+ARG PLATFORM="${BUILDPLATFORM}"
+ARG LATEST=base
+
+FROM --platform=${PLATFORM} ${BASE} AS base
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+        ca-certificates \
+        locales \
+        sudo \
+    && rm -rf /var/lib/apt/lists/ \
+    && groupmod -n \$U ubuntu \
+    && usermod -d /home/\$U -c "" -l modulo ubuntu \
+    && echo "\$U ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+    && locale-gen
+
+FROM --platform=${PLATFORM} ${LATEST} AS latest
+USER modulo
+WORKDIR /home/modulo
+RUN yes | sudo unminimize
+
+ENV LC_ALL=
+COPY --chown=modulo:modulo --link --parents ["./*.sh", "/home/modulo/.dotfiles"]
+
+COPY --chown=modulo:modulo --link --parents ["./01.apt/0.keys/modulo", "./01.apt/0.keys/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/01.apt/0.keys/install
+
+COPY --chown=modulo:modulo --link --parents ["./01.apt/2.packages/default", "./01.apt/2.packages/modulo", "./01.apt/2.packages/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/01.apt/2.packages/install
+
+COPY --chown=modulo:modulo --link --parents ["./02.git/modulo", "./02.git/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/02.git/install
+
+COPY --chown=modulo:modulo --link --parents ["./03.pip/modulo", "./03.pip/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/03.pip/install
+
+COPY --chown=modulo:modulo --link --parents ["./07.symlink/2.home/default", "./07.symlink/2.home/modulo", "./07.symlink/2.home/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/07.symlink/2.home/install
+
+COPY --chown=modulo:modulo --link --parents ["./08.post_install/default", "./08.post_install/docker_cli", "./08.post_install/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/08.post_install/install
+
+COPY --chown=modulo:modulo --link --parents ["./09.dockerfile/modulo", "./09.dockerfile/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/09.dockerfile/install

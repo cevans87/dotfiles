@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+from dataclasses import dataclass
+from getpass import getuser
+from pprint import pprint
+from pathlib import Path
+import sys
+import subprocess
+from textwrap import dedent
+from typing import Iterable, NewType
+
+
+Tag = NewType('Tag', str)
+
+repo_path = Path(__file__).parent.parent.absolute()
+
+
+@dataclass(frozen=True)
+class User:
+    name: str
+    tags: Iterable[Tag]
+
+    def __str__(self) -> str:
+        return self.name
+
+    @staticmethod
+    def of_name(name: str) -> User:
+        tags = tuple(
+            sorted(
+                filter(
+                    None,
+                    subprocess.check_output([f'{repo_path / "ts.sh"}', name, ""]).decode().splitlines()
+                )
+            )
+        )
+        return User(name=name, tags=tags)
+
+
+@dataclass(frozen=True, order=True)
+class Stage:
+    path: Path
+    copy_paths: Iterable[Path]
+    user: User
+
+    def __str__(self) -> str:
+        return '\n'.join([
+            '',
+            ''.join([
+                f'COPY --chown={self.user}:{self.user} --link --parents [',
+                *map(
+                    lambda copy_path: f'"./{copy_path.relative_to(repo_path)}", ',
+                    [*self.copy_paths, self.path / 'install'])
+                ,
+                f'"{Path(f"/home/{self.user}/.dotfiles")}"]'
+            ]),
+            f'RUN --mount=type=ssh /home/{self.user}/.dotfiles/{self.path.relative_to(repo_path)}/install'
+        ])
+
+    @staticmethod
+    def of_path_and_user(path: Path, user: User) -> Stage:
+        copy_paths = tuple(
+            sorted(
+                filter(
+                    lambda copy_path: copy_path.exists(),
+                    map(
+                        lambda tag: path / tag,
+                        user.tags
+                    )
+                )
+            )
+        )
+
+        return Stage(path=path, copy_paths=copy_paths, user=user)
+
+
+@dataclass(frozen=True)
+class Dockerfile:
+    path: Path
+    stages: Iterable[Stage]
+    user: User
+
+    def __str__(self) -> str:
+        return '\n'.join([
+            dedent(fr'''
+                # syntax=docker/dockerfile-upstream:master-labs
+                ARG BASE=ubuntu:rolling
+                ARG PLATFORM="${{BUILDPLATFORM}}"
+                ARG LATEST=base
+
+                FROM --platform=${{PLATFORM}} ${{BASE}} AS base
+                RUN apt-get update \
+                    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+                        ca-certificates \
+                        locales \
+                        python3 \
+                        sudo \
+                    && rm -rf /var/lib/apt/lists/ \
+                    && groupmod -n \$U ubuntu \
+                    && usermod -d /home/\$U -c "" -l {self.user} ubuntu \
+                    && echo "\$U ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
+                    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+                    && locale-gen
+
+                FROM --platform=${{PLATFORM}} ${{LATEST}} AS latest
+                USER {self.user}
+                WORKDIR /home/{self.user}
+                RUN yes | sudo unminimize
+
+                ENV LC_ALL=
+                COPY --chown={self.user}:{self.user} --link --parents ["./*.sh", "/home/{self.user}/.dotfiles"]
+            ''').strip(),
+            *map(str, self.stages),
+            '',
+        ])
+
+    @staticmethod
+    def of_path(path: Path) -> Dockerfile:
+        user = User.of_name(name=path.name)
+        stages = tuple(
+            sorted(
+                filter(
+                    lambda stage: stage.copy_paths,
+                    map(
+                        lambda path: Stage.of_path_and_user(path=path, user=user),
+                        filter(
+                            lambda path: path != repo_path,
+                            map(
+                                lambda path: path.parent.absolute(),
+                                repo_path.rglob(r"install")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+
+        return Dockerfile(path=path, stages=stages, user=user)
+
+
+def main() -> None:
+    if not (path := (Path(__file__).parent / getuser())).exists():
+        return
+
+    dockerfiles: Iterable[Dockerfile] = tuple(
+        map(
+            lambda path: Dockerfile.of_path(path=path),
+            path.iterdir()
+        )
+    )
+    tuple(
+        map(
+            lambda dockerfile: dockerfile.path.write_text(str(dockerfile)),
+            dockerfiles
+        )
+    )
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile-upstream:master-labs
+ARG BASE=ubuntu:rolling
+ARG PLATFORM="${BUILDPLATFORM}"
+ARG LATEST=base
+
+FROM --platform=${PLATFORM} ${BASE} AS base
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+        ca-certificates \
+        locales \
+        sudo \
+    && rm -rf /var/lib/apt/lists/ \
+    && groupmod -n \$U ubuntu \
+    && usermod -d /home/\$U -c "" -l hemlock ubuntu \
+    && echo "\$U ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+    && locale-gen
+
+FROM --platform=${PLATFORM} ${LATEST} AS latest
+USER hemlock
+WORKDIR /home/hemlock
+RUN yes | sudo unminimize
+
+ENV LC_ALL=
+COPY --chown=hemlock:hemlock --link --parents ["./*.sh", "/home/hemlock/.dotfiles"]
+
+COPY --chown=hemlock:hemlock --link --parents ["./01.apt/2.packages/default", "./01.apt/2.packages/hemlock", "./01.apt/2.packages/install", "/home/hemlock/.dotfiles"]
+RUN --mount=type=ssh /home/hemlock/.dotfiles/01.apt/2.packages/install
+
+COPY --chown=hemlock:hemlock --link --parents ["./02.git/hemlock", "./02.git/install", "/home/hemlock/.dotfiles"]
+RUN --mount=type=ssh /home/hemlock/.dotfiles/02.git/install
+
+COPY --chown=hemlock:hemlock --link --parents ["./05.opam/hemlock", "./05.opam/install", "/home/hemlock/.dotfiles"]
+RUN --mount=type=ssh /home/hemlock/.dotfiles/05.opam/install
+
+COPY --chown=hemlock:hemlock --link --parents ["./07.symlink/2.home/default", "./07.symlink/2.home/hemlock", "./07.symlink/2.home/install", "/home/hemlock/.dotfiles"]
+RUN --mount=type=ssh /home/hemlock/.dotfiles/07.symlink/2.home/install
+
+COPY --chown=hemlock:hemlock --link --parents ["./08.post_install/default", "./08.post_install/install", "/home/hemlock/.dotfiles"]
+RUN --mount=type=ssh /home/hemlock/.dotfiles/08.post_install/install

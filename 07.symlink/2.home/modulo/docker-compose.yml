@@ -1,65 +1,13 @@
 version: "3.9"
 services:
-  cse507-ta-project:
-    build:
-      args:
-        - PLATFORM
-        - LATEST=glenn_sun/cse507-ta-project:base
-        - USER=cse507-ta-project
-      context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
-      target: latest
-    command: /usr/bin/tmux
-    environment:
-      - SSH_AUTH_SOCK
-    container_name: modulo__cse507_ta_project
-    extends:
-      file: ./cse507-ta-project/docker-compose.yml
-      service: base
-    image: modulo/cse507-ta-project
-    privileged: true
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      - /home/modulo/.bash_history:/home/cse507-ta-project/.bash_history
-      - /home/modulo/.ssh:/home/cse507-ta-project/.ssh
-      - /home/modulo/cse507-ta-project:/home/cse507-ta-project/cse507-ta-project
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-  fuel-core:
-    build:
-      args:
-        - PLATFORM
-        - LATEST=FuelLabs/fuel-core
-        - USER=fuel-core
-      context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
-      target: latest
-    cap_add:
-      - ALL
-    command: /usr/bin/tmux
-    environment:
-      - SSH_AUTH_SOCK
-    container_name: modulo__fuel_core
-    extends:
-      file: ./Hemlock/docker-compose.yml
-      service: base
-    image: modulo/fuel-core
-    privileged: true
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      - /home/modulo/.bash_history:/home/hemlock/.bash_history
-      - /home/modulo/.ssh:/home/hemlock/.ssh
-      - /home/modulo/Hemlock:/home/hemlock/Hemlock
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
   hemlock:
     build:
       args:
         - PLATFORM
         - LATEST=branchtaken/hemlock:base
         - USER=hemlock
-      context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      context: /home/modulo/.dotfiles
+      dockerfile: 09.dockerfile/modulo/hemlock
       target: latest
     cap_add:
       - ALL
@@ -84,8 +32,8 @@ services:
       args:
         - PLATFORM
         - USER=modulo
-      context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
+      context: /home/modulo/.dotfiles
+      dockerfile: 09.dockerfile/modulo/modulo
       target: latest
       ssh:
         - default
@@ -105,29 +53,3 @@ services:
       - /home/modulo/Hemlock:/home/modulo/Hemlock
       - /var/run/docker.sock:/var/run/docker.sock
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-  optional-checker-paper:
-    build:
-      args:
-        - PLATFORM
-        - LATEST=optional-checker-paper/optional-checker-paper:base
-        - USER=Optional-Checker-Paper
-      context: /home/modulo
-      dockerfile: .dotfiles/07.symlink/2.home/modulo/Dockerfile
-      target: latest
-    command: /usr/bin/tmux
-    environment:
-      - SSH_AUTH_SOCK
-    container_name: modulo__optional_checker_paper
-    extends:
-      file: ./cse503/Optional-Checker-Paper/docker-compose.yml
-      service: base
-    image: modulo/optional-checker-paper
-    privileged: true
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      - /home/modulo/.bash_history:/home/Optional-Checker-Paper/.bash_history
-      - /home/modulo/.ssh:/home/Optional-Checker-Paper/.ssh
-      - /home/modulo/Optional-Checker-Paper:/home/Optional-Checker-Paper/Optional-Checker-Paper
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-
