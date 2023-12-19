@@ -3,9 +3,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from getpass import getuser
-from pprint import pprint
 from pathlib import Path
-import sys
 import subprocess
 from textwrap import dedent
 from typing import Iterable, NewType
@@ -26,14 +24,10 @@ class User:
 
     @staticmethod
     def of_name(name: str) -> User:
-        tags = tuple(
-            sorted(
-                filter(
-                    None,
-                    subprocess.check_output([f'{repo_path / "ts.sh"}', name, ""]).decode().splitlines()
-                )
-            )
-        )
+        tags = filter(None, subprocess.check_output([f'{repo_path / "ts.sh"}', name, ""]).decode().splitlines())
+        tags = sorted(tags)
+        tags = tuple(tags)
+
         return User(name=name, tags=tags)
 
 
@@ -59,17 +53,10 @@ class Stage:
 
     @staticmethod
     def of_path_and_user(path: Path, user: User) -> Stage:
-        copy_paths = tuple(
-            sorted(
-                filter(
-                    lambda copy_path: copy_path.exists(),
-                    map(
-                        lambda tag: path / tag,
-                        user.tags
-                    )
-                )
-            )
-        )
+        copy_paths = map(lambda tag: path / tag, user.tags)
+        copy_paths = filter(lambda copy_path: copy_path.exists(), copy_paths)
+        copy_paths = sorted(copy_paths)
+        copy_paths = tuple(copy_paths)
 
         return Stage(path=path, copy_paths=copy_paths, user=user)
 
@@ -117,23 +104,13 @@ class Dockerfile:
     @staticmethod
     def of_path(path: Path) -> Dockerfile:
         user = User.of_name(name=path.name)
-        stages = tuple(
-            sorted(
-                filter(
-                    lambda stage: stage.copy_paths,
-                    map(
-                        lambda path: Stage.of_path_and_user(path=path, user=user),
-                        filter(
-                            lambda path: path != repo_path,
-                            map(
-                                lambda path: path.parent.absolute(),
-                                repo_path.rglob(r"install")
-                            )
-                        )
-                    )
-                )
-            )
-        )
+
+        stages = map(lambda path: path.parent.absolute(), repo_path.rglob('install'))
+        stages = filter(lambda path: path != repo_path, stages)
+        stages = map(lambda path: Stage.of_path_and_user(path=path, user=user), stages)
+        stages = filter(lambda stage: stage.copy_paths, stages)
+        stages = sorted(stages)
+        stages = tuple(stages)
 
         return Dockerfile(path=path, stages=stages, user=user)
 
@@ -142,18 +119,10 @@ def main() -> None:
     if not (path := (Path(__file__).parent / getuser())).exists():
         return
 
-    dockerfiles: Iterable[Dockerfile] = tuple(
-        map(
-            lambda path: Dockerfile.of_path(path=path),
-            path.iterdir()
-        )
-    )
-    tuple(
-        map(
-            lambda dockerfile: dockerfile.path.write_text(str(dockerfile)),
-            dockerfiles
-        )
-    )
+    dockerfiles = map(lambda path: Dockerfile.of_path(path=path), path.iterdir())
+    dockerfiles = map(lambda dockerfile: dockerfile.path.write_text(str(dockerfile)), dockerfiles)
+
+    _ = tuple(dockerfiles)
 
 
 if __name__ == '__main__':
