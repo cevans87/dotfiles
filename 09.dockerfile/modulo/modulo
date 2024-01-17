@@ -7,6 +7,7 @@ FROM --platform=${PLATFORM} ${BASE} AS base
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         ca-certificates \
+        curl \
         locales \
         python3 \
         sudo \
@@ -25,10 +26,13 @@ RUN yes | sudo unminimize
 ENV LC_ALL=
 COPY --chown=modulo:modulo --link --parents ["./*.sh", "/home/modulo/.dotfiles"]
 
+COPY --chown=modulo:modulo --link --parents ["./00.pre_install/rust", "./00.pre_install/install", "/home/modulo/.dotfiles"]
+RUN --mount=type=ssh /home/modulo/.dotfiles/00.pre_install/install
+
 COPY --chown=modulo:modulo --link --parents ["./01.apt/0.keys/modulo", "./01.apt/0.keys/install", "/home/modulo/.dotfiles"]
 RUN --mount=type=ssh /home/modulo/.dotfiles/01.apt/0.keys/install
 
-COPY --chown=modulo:modulo --link --parents ["./01.apt/2.packages/default", "./01.apt/2.packages/modulo", "./01.apt/2.packages/install", "/home/modulo/.dotfiles"]
+COPY --chown=modulo:modulo --link --parents ["./01.apt/2.packages/default", "./01.apt/2.packages/modulo", "./01.apt/2.packages/python3_12", "./01.apt/2.packages/install", "/home/modulo/.dotfiles"]
 RUN --mount=type=ssh /home/modulo/.dotfiles/01.apt/2.packages/install
 
 COPY --chown=modulo:modulo --link --parents ["./02.git/modulo", "./02.git/install", "/home/modulo/.dotfiles"]

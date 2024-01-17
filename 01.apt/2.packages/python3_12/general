@@ -1,0 +1,5 @@
+binfmt-support
+python3.12
+python3.12-minimal
+python3.12-doc
+python3.12-venv

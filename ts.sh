@@ -17,8 +17,14 @@ case "$U" in modulo) TS+=("docker_cli") ;; esac
 # docker_daemon
 case "$H" in barovia | waterdeep) TS+=("docker_daemon") ;; esac
 
+# python3_12
+case "$U" in atools | modulo) TS+=("python3_12") ;; esac
+
 # rig
 case "$H" in barovia | waterdeep) TS+=("rig") ;; esac
+
+# rust
+case "$U" in modulo) TS+=("rust") ;; esac
 
 # sway
 case "$H" in barovia | waterdeep) TS+=("sway") ;; esac

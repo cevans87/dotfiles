@@ -1,4 +1,3 @@
-cargo
 cmake
 libfreetype6-dev
 libfontconfig1-dev
